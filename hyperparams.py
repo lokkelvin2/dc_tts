@@ -32,7 +32,9 @@ class Hyperparams:
     attention_win_size = 3
 
     # data
-    data = "/data/private/voice/LJSpeech-1.0"
+    # TODO remove dirs and replace with browser
+    data = '/data'
+    
     # data = "/data/private/voice/kate"
     test_data = 'harvard_sentences.txt'
     vocab = "PE abcdefghijklmnopqrstuvwxyz'.?" # P: Padding, E: EOS.
@@ -41,7 +43,15 @@ class Hyperparams:
 
     # training scheme
     lr = 0.001 # Initial learning rate.
-    logdir = "logdir/LJ01"
-    sampledir = 'samples'
+    #logdir = "/model/Obama_MLK"
+    #logdir = "/model/Trump_corona"
+    logdir = "/model/Spongebob_bfbb"
+    #chkpt_dir = "/model/Spongebob_bfbb-2"
+    chkpt_dir = "/model/Spongebob_bfbb-1"
+    #chkpt_dir = logdir+'-2'
+    #chkpt_dir = "/model/LJ01-1"
+    #chkpt_dir = "/model/LJ01-1"
+    sampledir = "/sample"#'samples'
     B = 32 # batch size
+    #B = 4
     num_iterations = 2000000
