@@ -1,8 +1,31 @@
+# Update
+  * Qt GUI wrapper for synthesis
+  * Stream Elements integration through donation alerts
+## Todo
+- [x] Pygame audio instead of sounddevice
+- [ ] PyQt threading
+- [ ] Websockets 
+- [ ] Add neural vocoder (Waveglow?) instead of griffin-lim
+
+## Requirements
+  * audioread
+  * librosa
+  * numpy
+  * PyQt5==5.15.0
+  * requests
+  * tensorflow==1.15.0
+  * tqdm
+  * matplotlib
+  * scipy
+  * num2words
+  * pygame
+
+
 # A TensorFlow Implementation of DC-TTS: yet another text-to-speech model
 
 I implement yet another text-to-speech model, dc-tts, introduced in [Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention](https://arxiv.org/abs/1710.08969). My goal, however, is not just replicating the paper. Rather, I'd like to gain insights about various sound projects.
 
-## Requirements
+## ~~Requirements~~
   * NumPy >= 1.11.1
   * TensorFlow >= 1.3 (Note that the API of `tf.contrib.layers.layer_norm` has changed since 1.3)
   * librosa
