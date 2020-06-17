@@ -143,6 +143,19 @@ if __name__ == '__main__':
     logdir = hp.logdir + "-" + str(num)
     sv = tf.train.Supervisor(logdir=logdir, save_model_secs=0, global_step=g.global_step)
     with sv.managed_session() as sess:
+        if num==1:
+            print("Loading pretrained model as a checkpoint\n")
+            saver1 = sv.saver
+            
+            saver1.restore(sess, tf.train.latest_checkpoint(hp.chkpt_dir))
+            print("Previous session loaded\n")
+        elif num==2:
+            print("Loading pretrained model as a checkpoint\n")
+            saver1 = sv.saver
+            
+            saver1.restore(sess, tf.train.latest_checkpoint(hp.chkpt_dir))
+            print("Previous session loaded\n")
+
         while 1:
             for _ in tqdm(range(g.num_batch), total=g.num_batch, ncols=70, leave=False, unit='b'):
                 gs, _ = sess.run([g.global_step, g.train_op])
