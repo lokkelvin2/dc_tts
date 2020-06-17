@@ -1,6 +1,9 @@
+<img src="https://i.imgur.com/kN5MDen.png" height="400" align="right">
+
 # Update
   * Qt GUI wrapper for synthesis
   * Stream Elements integration through donation alerts
+  
 ## Todo
 - [x] Pygame audio instead of sounddevice
 - [ ] PyQt threading
