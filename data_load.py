@@ -15,6 +15,7 @@ import codecs
 import re
 import os
 import unicodedata
+import textwrap
 
 def load_vocab():
     char2idx = {char: idx for idx, char in enumerate(hp.vocab)}
@@ -39,7 +40,9 @@ def load_data(mode="train"):
     char2idx, idx2char = load_vocab()
 
     if mode=="train":
-        if "LJ" in hp.data:
+        #if "LJ" in hp.data:
+        ## TODO remove this section
+        if True:
             # Parse
             fpaths, text_lengths, texts = [], [], []
             transcript = os.path.join(hp.data, 'transcript.csv')
@@ -84,6 +87,19 @@ def load_data(mode="train"):
         for i, sent in enumerate(sents):
             texts[i, :len(sent)] = [char2idx[char] for char in sent]
         return texts
+    
+def load_data_text(input):
+    # Loading text from user input
+    # Takes a paragraph of text, splits it into chunks by whitespace. EOL using E
+    # Normalizes each chunk and converts into numpy array
+    char2idx, idx2char = load_vocab()
+    lines = textwrap.wrap(input, hp.max_N-1, break_long_words=False) # Wrap after max char limit
+    sents = [text_normalize(line).strip() + "E" for line in lines]
+    texts = np.zeros((len(sents), hp.max_N), np.int32)
+    for i, sent in enumerate(sents):
+        texts[i, :len(sent)] = [char2idx[char] for char in sent]
+    return texts
+
 
 def get_batch():
     """Loads training data and put them in queues"""
@@ -104,8 +120,10 @@ def get_batch():
         if hp.prepro:
             def _load_spectrograms(fpath):
                 fname = os.path.basename(fpath)
-                mel = "mels/{}".format(fname.replace("wav", "npy"))
-                mag = "mags/{}".format(fname.replace("wav", "npy"))
+                #mel = "mels/{}".format(fname.replace("wav", "npy"))
+                #mag = "mags/{}".format(fname.replace("wav", "npy"))
+                mel = "mels/{}".format(fname.decode("utf-8").replace("wav", "npy"))
+                mag = "mags/{}".format(fname.decode("utf-8").replace("wav", "npy"))
                 return fname, np.load(mel), np.load(mag)
 
             fname, mel, mag = tf.py_func(_load_spectrograms, [fpath], [tf.string, tf.float32, tf.float32])
@@ -129,4 +147,3 @@ def get_batch():
                                             dynamic_pad=True)
 
     return texts, mels, mags, fnames, num_batch
-
