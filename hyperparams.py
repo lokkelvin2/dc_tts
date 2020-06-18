@@ -43,14 +43,8 @@ class Hyperparams:
 
     # training scheme
     lr = 0.001 # Initial learning rate.
-    #logdir = "/model/Obama_MLK"
-    #logdir = "/model/Trump_corona"
-    logdir = "/model/Spongebob_bfbb"
-    #chkpt_dir = "/model/Spongebob_bfbb-2"
-    chkpt_dir = "/model/Spongebob_bfbb-1"
+    logdir = "/model/LJ01"
     #chkpt_dir = logdir+'-2'
-    #chkpt_dir = "/model/LJ01-1"
-    #chkpt_dir = "/model/LJ01-1"
     sampledir = "/sample"#'samples'
     B = 32 # batch size
     #B = 4
