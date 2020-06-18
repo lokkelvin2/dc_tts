@@ -14,12 +14,11 @@
 
 ## Requirements
   * Python >=3.7
-  * audioread
   * librosa
   * numpy
   * PyQt5==5.15.0
   * requests
-  * tensorflow==1.15.0
+  * tensorflow>=1.13.0
   * tqdm
   * matplotlib
   * scipy
