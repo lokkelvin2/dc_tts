@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# /usr/bin/python2
+
 '''
 By kyubyong park. kbpark.linguist@gmail.com.
 https://www.github.com/kyubyong/dc_tts
@@ -18,26 +18,24 @@ import data_load
 from scipy.io.wavfile import write
 from tqdm import tqdm
 import time
-import sounddevice as sd
+#import sounddevice as sd
 import pygame
 
 def synthesize(input_text,model_path,g,
                process_callback=None):
+    # process_callback: pyqtsignal callback
+    
     # Load text data
     if input_text: # use user input
         L = data_load.load_data_text(input_text)
     else: # use txt file
         L = data_load.load_data("synthesize")
-    ## Load graph
+    ## Load graph <- Graph loaded in main GUI thread or worker thread
     #g = Graph(mode="synthesize")
     #print("Graph loaded")
     
-    # Pick model
-    #if model_path==None:
-        ## TODO use filepath from browser
-        #model_path = hp.logdir
     start = time.time()
-    print(model_path)
+    # print(model_path)
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
@@ -66,9 +64,10 @@ def synthesize(input_text,model_path,g,
             Y[:, j, :] = _Y[:, j, :]
             prev_max_attentions = _max_attentions[:, j]
             if process_callback:
-                if j % 10 == 0:
+                if j % 5 == 0:
                     elapsed = time.time() - start
-                    process_callback(j,elapsed)
+                    #process_callback(j,elapsed)
+                    process_callback.emit(j/hp.max_T * 100)
                     
 
         # Get magnitude
@@ -80,13 +79,15 @@ def synthesize(input_text,model_path,g,
         for i, mag in enumerate(Z):
             print("Working on file", i+1)
             wav = spectrogram2wav(mag)
+            # Normalize from 32bit float to signed 16bit wav
             wav = (wav/np.amax(wav) * 32767).astype(np.int16)
             output.append(wav)
             #print('writing file')
             #write(hp.sampledir + "/{}.wav".format(i+1), hp.sr, wav)
         if process_callback:
             elapsed = time.time() - start
-            process_callback(hp.max_T,elapsed)
+            #process_callback(hp.max_T,elapsed)
+            process_callback.emit(100)
         outwav = np.concatenate(output)
         return outwav
             #for wav in output:
