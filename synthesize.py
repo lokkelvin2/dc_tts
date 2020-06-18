@@ -22,7 +22,8 @@ import time
 import pygame
 
 def synthesize(input_text,model_path,g,
-               process_callback=None):
+               process_callback=None,
+               elapsed_callback=None):
     # process_callback: pyqtsignal callback
     
     # Load text data
@@ -68,6 +69,8 @@ def synthesize(input_text,model_path,g,
                     elapsed = time.time() - start
                     #process_callback(j,elapsed)
                     process_callback.emit(j/hp.max_T * 100)
+                    if elapsed_callback:
+                        elapsed_callback.emit(int(elapsed))
                     
 
         # Get magnitude
@@ -88,6 +91,8 @@ def synthesize(input_text,model_path,g,
             elapsed = time.time() - start
             #process_callback(hp.max_T,elapsed)
             process_callback.emit(100)
+            if elapsed_callback:
+                elapsed_callback.emit(int(elapsed))
         outwav = np.concatenate(output)
         return outwav
             #for wav in output:
