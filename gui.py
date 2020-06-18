@@ -295,6 +295,8 @@ class GUI(QMainWindow, Ui_MainWindow):
 
     def add_model_path(self):
         fpath = self.open_folder_dialog()
+        if not fpath: # If no folder selected
+            return
         fpath = fpath[:-2]# Remove the -1 -2 naming standard
         if fpath not in self.model_dir:
             head,tail = os.path.split(fpath) # Split into parent and child dir
