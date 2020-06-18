@@ -11,6 +11,7 @@
 - [ ] Add neural vocoder (Waveglow?) instead of griffin-lim
 
 ## Requirements
+  * Python >=3.7
   * audioread
   * librosa
   * numpy
@@ -22,7 +23,10 @@
   * scipy
   * num2words
   * pygame
-
+## To Run
+``` 
+python gui.py
+```
 
 # A TensorFlow Implementation of DC-TTS: yet another text-to-speech model
 
