@@ -1,0 +1,12 @@
+librosa
+matplotlib
+num2words
+numpy
+pygame
+PyQt5==5.15.0
+requests
+scikit-learn
+scipy
+tensorflow>=1.13.0
+tqdm
+
