@@ -43,11 +43,13 @@ class WorkerSignals(QObject):
         `int` indicating % progress 
 
     '''
+    
     textready = pyqtSignal(str) 
     finished = pyqtSignal()
     error = pyqtSignal(tuple)
     result = pyqtSignal(object)
     progress = pyqtSignal(int)
+    elapsed = pyqtSignal(int)
 
 class Worker(QRunnable):
     '''
@@ -74,6 +76,7 @@ class Worker(QRunnable):
 
         # Add the callback to our kwargs
         self.kwargs['progress_callback'] = self.signals.progress        
+        self.kwargs['elapsed_callback'] = self.signals.textready
         self.kwargs['text_ready'] = self.signals.textready
 
     @pyqtSlot()
@@ -96,6 +99,7 @@ class Worker(QRunnable):
 
 class GUISignals(QObject):
     progress = pyqtSignal(int)   
+    elapsed = pyqtSignal(int)
 
 class GUI(QMainWindow, Ui_MainWindow):
     def __init__(self,app):
@@ -152,6 +156,7 @@ class GUI(QMainWindow, Ui_MainWindow):
         print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
         self.signals = GUISignals()  
         self.signals.progress.connect(self.update_log_bar)
+        self.signals.elapsed.connect(self.print_elapsed)
 
     
     @pyqtSlot(str)
@@ -187,6 +192,14 @@ class GUI(QMainWindow, Ui_MainWindow):
         self.progressBar2.setValue(val)
         self.progressBar2.setTextVisible(val != 0)
 
+    @pyqtSlot(int)
+    def print_elapsed(self,val):
+        if self.tabWidget.currentIndex()==0:
+            self.update_log_window('Elapsed: '+str(val)+'s',mode='overwrite') 
+        else:
+            pass # No elapsed time for tab2 
+    
+
     def thread_complete(self):
         #print("THREAD COMPLETE!")
         pass
@@ -208,6 +221,7 @@ class GUI(QMainWindow, Ui_MainWindow):
         worker.signals.finished.connect(self.thread_complete)
         worker.signals.progress.connect(self.update_log_bar2)
         worker.signals.textready.connect(self.draw_text)
+        worker.signals.elapsed.connect(self.print_elapsed)
         
         # Execute
         self.threadpool.start(worker) 
@@ -222,7 +236,7 @@ class GUI(QMainWindow, Ui_MainWindow):
     # def progress_fn(self, n):
     #     print("%d%% done" % n)
     
-    def execute_this_fn(self, channel, progress_callback, text_ready):
+    def execute_this_fn(self, channel, progress_callback, elapsed_callback, text_ready):
         # Function executes in client thread. 
         # Synthesis does not block gui thread.
         # Can run methods of GUI class but cannot run GUI updates directly
@@ -272,7 +286,7 @@ class GUI(QMainWindow, Ui_MainWindow):
                             text_ready.emit("Log2:\n###########################")
                             text_ready.emit("Log2:"+name+' donated '+currency+str(amount))
                             text_ready.emit("Log2:"+msg)
-                            wav=synthesize.synthesize(msg, model_fpath, graph, progress_callback)
+                            wav=synthesize.synthesize(msg, model_fpath, graph, progress_callback, elapsed_callback)
                             self.playback_wav(wav)
                             self.prev_time = dono_time # Increment time
             time.sleep(0.5)
@@ -374,7 +388,7 @@ class GUI(QMainWindow, Ui_MainWindow):
         self.update_status_bar("Creating voice")
         model_fpath = self.get_current_model_dir()
         # We use a signal callback here to stick to the same params type in synthesize.py
-        wav = synthesize.synthesize(text, model_fpath, self.g, self.signals.progress)
+        wav = synthesize.synthesize(text, model_fpath, self.g, self.signals.progress, self.signals.elapsed)
         self.playback_wav(wav)
         self.update_log_window('Done')
         self.TTSDialogButton.setEnabled(True)
