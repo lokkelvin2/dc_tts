@@ -109,7 +109,7 @@ class GUI(QMainWindow, Ui_MainWindow):
               
         self.app = app
         self.setupUi(self)
-        self.setWindowTitle("TTS GUI Version %s" %0.1)
+        self.setWindowTitle("TTS GUI Version %s" %1.0)
         self.ModelCombo.currentIndexChanged.connect(self.selection_change)
         self.TTSDialogButton.clicked.connect(self.start_synthesis)
         self.TTSSkipButton.clicked.connect(self.skip_wav)
