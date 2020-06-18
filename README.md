@@ -6,7 +6,7 @@
   
 ## Todo
 - [x] Pygame audio instead of sounddevice
-- [ ] PyQt threading
+- [x] PyQt threading
 - [ ] Websockets 
 - [ ] Add neural vocoder (Waveglow?) instead of griffin-lim
 
