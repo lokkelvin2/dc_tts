@@ -1,7 +1,7 @@
 <img src="https://i.imgur.com/kN5MDen.png" height="400" align="right">
 
 # Update
-  * Qt GUI wrapper for synthesis
+  * PyQt5 GUI wrapper for Kyubyong's dc_tts 
   * Stream Elements integration through donation alerts
   
 ## Todo
