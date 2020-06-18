@@ -7,8 +7,10 @@
 ## Todo
 - [x] Pygame audio instead of sounddevice
 - [x] PyQt threading
+- [x] Package into portable executable (cx_freeze/pyinstaller)
 - [ ] Websockets 
 - [ ] Add neural vocoder (Waveglow?) instead of griffin-lim
+- [ ] Phoneme support with seq2seq model or espeak
 
 ## Requirements
   * Python >=3.7
