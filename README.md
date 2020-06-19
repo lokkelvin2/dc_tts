@@ -1,9 +1,13 @@
 <img src="https://i.imgur.com/kN5MDen.png" height="400" align="right">
 
-# Update
+# Features
   * PyQt5 GUI wrapper for Kyubyong's dc_tts 
   * Stream Elements integration through donation alerts
-  
+
+## Download link 
+A portable executable can be found at the [Releases](https://github.com/lokkelvin2/dc_tts_GUI/releases) page, or directly [here](https://github.com/lokkelvin2/dc_tts_GUI/releases/download/v1.0/gui-v1.0-windows_x86_64.exe)
+
+
 ## Todo
 - [x] Pygame mixer instead of sounddevice
 - [x] PyQt threading
