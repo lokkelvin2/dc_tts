@@ -76,7 +76,7 @@ class Worker(QRunnable):
 
         # Add the callback to our kwargs
         self.kwargs['progress_callback'] = self.signals.progress        
-        self.kwargs['elapsed_callback'] = self.signals.textready
+        self.kwargs['elapsed_callback'] = self.signals.elapsed
         self.kwargs['text_ready'] = self.signals.textready
 
     @pyqtSlot()

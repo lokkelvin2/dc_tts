@@ -182,5 +182,5 @@ class Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "Minimum amount for TTS:"))
         self.label_4.setText(_translate("MainWindow", "Status:"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "StreamElements"))
-        self.label_6.setText(_translate("MainWindow", "<a href=\"https://github.com/lokkelvin2/dc_tts/\"><span style=\" color:#000000;\">v1.0</span></a></body>"))
+        self.label_6.setText(_translate("MainWindow", "<a href=\"https://github.com/lokkelvin2/dc_tts_GUI\"><span style=\" color:#000000;\">v1.0</span></a></body>"))
         self.statusbar.setText(_translate("MainWindow", "Ready"))
