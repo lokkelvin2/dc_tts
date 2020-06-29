@@ -5,7 +5,7 @@
   * Stream Elements integration through donation alerts
 
 ## Download link 
-A portable executable can be found at the [Releases](https://github.com/lokkelvin2/dc_tts_GUI/releases) page, or directly [here](https://github.com/lokkelvin2/dc_tts_GUI/releases/download/v1.0/gui-v.1.01-windows_x86_64.exe). Download a pretrained model separately to start playing with text to speech.
+A portable executable can be found at the [Releases](https://github.com/lokkelvin2/dc_tts_GUI/releases) page, or directly [here](https://github.com/lokkelvin2/dc_tts_GUI/releases/download/v1.01/gui-v.1.01-windows_x86_64.exe). Download a pretrained model separately to start playing with text to speech.
 
 
 ## Todo
@@ -16,6 +16,7 @@ A portable executable can be found at the [Releases](https://github.com/lokkelvi
 - [ ] Websockets 
 - [ ] Add neural vocoder (Waveglow?) instead of griffin-lim
 - [ ] Phoneme support with seq2seq model or espeak
+- [ ] Simple audio dsp (numpy) instead of bespoke ml models to create fun effects
 
 ## Requirements
   * Python >=3.7
