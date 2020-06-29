@@ -17,6 +17,7 @@ A portable executable can be found at the [Releases](https://github.com/lokkelvi
 - [ ] Add neural vocoder (Waveglow?) instead of griffin-lim
 - [ ] Phoneme support with seq2seq model or espeak
 - [ ] Simple audio dsp (numpy) instead of bespoke ml models to create fun effects
+- [ ] Make a tutorial page
 
 ## Requirements
   * Python >=3.7
