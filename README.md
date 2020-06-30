@@ -1,12 +1,19 @@
 <img src="https://i.imgur.com/kN5MDen.png" height="400" align="right">
 
-# Features
-  * PyQt5 GUI wrapper for Kyubyong's dc_tts 
-  * Stream Elements integration through donation alerts
+# Overview
+A machine learning based Text to Speech program with a user friendly GUI. Target audience include Twitch streamers or content creators looking for an open source TTS program. The aim of this software is to make tts synthesis accessible offline (No coding experience, gpu/colab) in a portable exe.
+
+## Features
+  * Reads donations from Stream Elements automatically
+  * PyQt5 wrapper for dc_tts
 
 ## Download link 
-A portable executable can be found at the [Releases](https://github.com/lokkelvin2/dc_tts_GUI/releases) page, or directly [here](https://github.com/lokkelvin2/dc_tts_GUI/releases/download/v1.01/gui-v.1.01-windows_x86_64.exe). Download a pretrained model separately to start playing with text to speech.
+A portable executable can be found at the [Releases](https://github.com/lokkelvin2/dc_tts_GUI/releases) page, or directly [here](https://github.com/lokkelvin2/dc_tts_GUI/releases/download/v1.01/gui-v.1.01-windows_x86_64.exe). Download a pretrained model separately (from below) to start playing with text to speech.
 
+Warning: the portable executable runs on CPU which leads to a >10x speed slowdown compared to running it on GPU. I might consider other faster models in the future for CPU inference.
+
+## Pretrained Model 
+A pretrained model for dc_tts is available from Kyubyong's repo or directly [here](https://www.dropbox.com/s/1oyipstjxh2n5wo/LJ_logdir.tar?dl=0). Kyubyong also provides pretrained models for 10 different languages from the [CSS10 dataset](https://github.com/Kyubyong/css10/). Of course, you are encouraged to try building your own custom voices to use with this GUI. 
 
 ## Todo
 - [x] Pygame mixer instead of sounddevice
@@ -16,91 +23,53 @@ A portable executable can be found at the [Releases](https://github.com/lokkelvi
 - [ ] Websockets 
 - [ ] Add neural vocoder (Waveglow?) instead of griffin-lim
 - [ ] Phoneme support with seq2seq model or espeak
-- [ ] Simple audio dsp (numpy) instead of bespoke ml models to create fun effects
 - [ ] Make a tutorial page
+- [ ] Add streamlabs support
 
+# Building from source
 ## Requirements
   * Python >=3.7
   * librosa
   * numpy
   * PyQt5==5.15.0
   * requests
-  * tensorflow>=1.13.0
+  * tensorflow>=1.13.0,<2.0.0
   * tqdm
   * matplotlib
   * scipy
   * num2words
   * pygame
+
 ## To Run
 ``` 
 python gui.py
 ```
 
-# A TensorFlow Implementation of DC-TTS: yet another text-to-speech model
 
-I implement yet another text-to-speech model, dc-tts, introduced in [Efficiently Trainable Text-to-Speech System Based on Deep Convolutional Networks with Guided Attention](https://arxiv.org/abs/1710.08969). My goal, however, is not just replicating the paper. Rather, I'd like to gain insights about various sound projects.
-
-## ~~Requirements~~
-  * NumPy >= 1.11.1
-  * TensorFlow >= 1.3 (Note that the API of `tf.contrib.layers.layer_norm` has changed since 1.3)
-  * librosa
-  * tqdm
-  * matplotlib
-  * scipy
-
-## Data
-
-<img src="https://image.shutterstock.com/z/stock-vector-korean-alphabet-korean-hangul-pattern-693680611.jpg" height="200" align="right">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Kate_Winslet_March_18%2C_2014_%28headshot%29.jpg/890px-Kate_Winslet_March_18%2C_2014_%28headshot%29.jpg" height="200" align="right">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Nick_Offerman_at_UMBC_%28cropped%29.jpg/440px-Nick_Offerman_at_UMBC_%28cropped%29.jpg" height="200" align="right">
-<img src="https://image.shutterstock.com/z/stock-vector-lj-letters-four-colors-in-abstract-background-logo-design-identity-in-circle-alphabet-letter-418687846.jpg" height="200" align="right">
-
-I train English models and an Korean model on four different speech datasets. <p> 1. [LJ Speech Dataset](https://keithito.com/LJ-Speech-Dataset/) <br/> 2. [Nick Offerman's Audiobooks](https://www.audible.com.au/search?searchNarrator=Nick+Offerman) <br/> 3. [Kate Winslet's Audiobook](https://www.audible.com.au/pd/Classics/Therese-Raquin-Audiobook/B00FF0SLW4/ref=a_search_c4_1_3_srTtl?qid=1516854754&sr=1-3) <br/> 4. [KSS Dataset](https://kaggle.com/bryanpark/korean-single-speaker-speech-dataset)
-
-LJ Speech Dataset is recently widely used as a benchmark dataset in the TTS task because it is publicly available, and it has 24 hours of reasonable quality samples.
-Nick's and Kate's audiobooks are additionally used to see if the model can learn even with less data, variable speech samples. They are 18 hours and 5 hours long, respectively. Finally, KSS Dataset is a Korean single speaker speech dataset that lasts more than 12 hours.
+## To train custom voices (transfer learning)
+The training steps are slightly modified from kyubyong to fix [#11](https://github.com/Kyubyong/dc_tts/issues/11). The training data is in the format of LJ Speech dataset and the expected folder structure is 
+```
+.
+└── data
+    ├── wavs
+    │   ├── data1.wav
+    │   └── data2.wav
+    └── transcript.csv
+```
+### Steps
+1. Use 22050Hz, 16 bit signed PCM wav files. Other formats are untested. 
+2. Create a csv transcript in the metadata convention of LJ Speech dataset and save it in the folder structure shown above.
+3. Extract the two folders in the pretrained model. Edit hyperparams.py to point to the location of the folders.
+3. Run `python prepro.py`
+4. Run `python train.py 1` to train Text2Mel 
+5. Run `python train.py 2` to train SSRN
+And you're done! You can load the model using the GUI to perform synthesis.
 
 
-## Training
-  * STEP 0. Download [LJ Speech Dataset](https://keithito.com/LJ-Speech-Dataset/) or prepare your own data.
-  * STEP 1. Adjust hyper parameters in `hyperparams.py`. (If you want to do preprocessing, set prepro True`.
-  * STEP 2. Run `python train.py 1` for training Text2Mel. (If you set prepro True, run python prepro.py first)
-  * STEP 3. Run `python train.py 2` for training SSRN.
-
-You can do STEP 2 and 3 at the same time, if you have more than one gpu card.
-
-## Training Curves
-
-<img src="fig/training_curves.png">
-
-## Attention Plot
-<img src="fig/attention.gif">
-
-## Sample Synthesis
-I generate speech samples based on [Harvard Sentences](http://www.cs.columbia.edu/~hgs/audio/harvard.html) as the original paper does. It is already included in the repo.
-
-  * Run `synthesize.py` and check the files in `samples`.
-
-## Generated Samples
-
-| Dataset       | Samples |
-| :----- |:-------------|
-| LJ      | [50k](https://soundcloud.com/kyubyong-park/sets/dc_tts) [200k](https://soundcloud.com/kyubyong-park/sets/dc_tts_lj_200k) [310k](https://soundcloud.com/kyubyong-park/sets/dc_tts_lj_310k) [800k](https://soundcloud.com/kyubyong-park/sets/dc_tts_lj_800k)|
-| Nick      | [40k](https://soundcloud.com/kyubyong-park/sets/dc_tts_nick_40k) [170k](https://soundcloud.com/kyubyong-park/sets/dc_tts_nick_170k) [300k](https://soundcloud.com/kyubyong-park/sets/dc_tts_nick_300k) [800k](https://soundcloud.com/kyubyong-park/sets/dc_tts_nick_800k)|
-| Kate| [40k](https://soundcloud.com/kyubyong-park/sets/dc_tts_kate_40k) [160k](https://soundcloud.com/kyubyong-park/sets/dc_tts_kate_160k) [300k](https://soundcloud.com/kyubyong-park/sets/dc_tts_kate_300k) [800k](https://soundcloud.com/kyubyong-park/sets/dc_tts_kate_800k) |
-| KSS| [400k](https://soundcloud.com/kyubyong-park/sets/dc_tts_ko_400k) |
-
-## Pretrained Model for LJ
-
-Download [this](https://www.dropbox.com/s/1oyipstjxh2n5wo/LJ_logdir.tar?dl=0).
+## License
+* dc_tts: Apache License v2.0
 
 ## Notes
-
-  * The paper didn't mention normalization, but without normalization I couldn't get it to work. So I added layer normalization.
-  * The paper fixed the learning rate to 0.001, but it didn't work for me. So I decayed it.
-  * I tried to train Text2Mel and SSRN simultaneously, but it didn't work. I guess separating those two networks mitigates the burden of training.
-  * The authors claimed that the model can be trained within a day, but unfortunately the luck was not mine. However obviously this is much fater than Tacotron as it uses only convolution layers.
-  * Thanks to the guided attention, the attention plot looks monotonic almost from the beginning. I guess this seems to hold the aligment tight so it won't lose track.
-  * The paper didn't mention dropouts. I applied them as I believe it helps for regularization.
-  * Check also other TTS models such as [Tacotron](https://github.com/kyubyong/tacotron) and [Deep Voice 3](https://github.com/kyubyong/deepvoice3).
+  * TTS code by Kyubyong: [https://github.com/Kyubyong/dc_tts](https://github.com/Kyubyong/dc_tts)
+  * Partial GUI code from [https://github.com/CorentinJ/Real-Time-Voice-Cloning](https://github.com/CorentinJ/Real-Time-Voice-Cloning) and layout inspired by u/realstreamer's Forsen TTS [https://www.youtube.com/watch?v=kL2tglbcDCo](https://www.youtube.com/watch?v=kL2tglbcDCo)
   
