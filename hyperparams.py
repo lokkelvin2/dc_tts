@@ -33,7 +33,7 @@ class Hyperparams:
 
     # data
     # TODO remove dirs and replace with browser
-    data = '/data'
+    data = '/content/dc_tts_GUI/data'
     
     # data = "/data/private/voice/kate"
     test_data = 'harvard_sentences.txt'
@@ -43,9 +43,9 @@ class Hyperparams:
 
     # training scheme
     lr = 0.001 # Initial learning rate.
-    logdir = "/model/LJ01"
+    logdir = "/content/dc_tts_GUI/model/LJ01"
     #chkpt_dir = logdir+'-2'
-    sampledir = "/sample"#'samples'
+    sampledir = "/content/dc_tts_GUI/sample"#'samples'
     B = 32 # batch size
     #B = 4
     num_iterations = 2000000
